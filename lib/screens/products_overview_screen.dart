@@ -1,3 +1,4 @@
+import 'package:DigitalShop/widgets/app_drawer.dart';
 import 'package:DigitalShop/widgets/productsGrid.dart';
 import 'package:flutter/material.dart';
 import '../widgets/badge.dart';
@@ -55,6 +56,7 @@ class _ProductsInfoScreenState extends State<ProductsInfoScreen> {
         ],
       ),
       body: ProductsGrid(_showonlyFav),
+      drawer: MainDrawer(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:DigitalShop/providers/cart.dart';
 import 'package:DigitalShop/providers/orders.dart';
 import 'package:DigitalShop/screens/cart_screen.dart';
+import 'package:DigitalShop/screens/orders_screen.dart';
 import 'package:DigitalShop/screens/productDetails_Screen.dart';
 
 import './screens/products_overview_screen.dart';
@@ -27,10 +28,12 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrange,
           ),
-          home: ProductsInfoScreen(),
+          initialRoute: '/',
           routes: {
+            '/': (ctx) => ProductsInfoScreen(),
             '/productDetails': (ctx) => ProductDetails(),
-            '/cartScreen': (ctx) => CartScreen()
+            '/cartScreen': (ctx) => CartScreen(),
+            'orders': (ctx) => OrdersScreen()
           },
         ));
   }

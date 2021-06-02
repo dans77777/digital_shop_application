@@ -1,4 +1,5 @@
 import 'package:DigitalShop/providers/cart.dart';
+import 'package:DigitalShop/providers/orders.dart';
 import 'package:DigitalShop/screens/cart_screen.dart';
 import 'package:DigitalShop/screens/productDetails_Screen.dart';
 
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => Products(),
           ),
-          ChangeNotifierProvider(create: (context) => Cart())
+          ChangeNotifierProvider(create: (context) => Cart()),
+          ChangeNotifierProvider(create: (context) => Order())
         ],
         child: MaterialApp(
           title: 'MyShop',

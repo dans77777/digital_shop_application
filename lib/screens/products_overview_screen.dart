@@ -1,5 +1,8 @@
 import 'package:DigitalShop/widgets/productsGrid.dart';
 import 'package:flutter/material.dart';
+import '../widgets/badge.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart.dart';
 
 enum FilterOptions {
   All,
@@ -38,8 +41,17 @@ class _ProductsInfoScreenState extends State<ProductsInfoScreen> {
                     PopupMenuItem(
                       child: Text('Show Favourites'),
                       value: FilterOptions.Favourits,
-                    )
-                  ])
+                    ),
+                  ]),
+          Consumer<Cart>(
+              builder: (_, cart, ch) =>
+                  Badge(child: ch, value: cart.itemCount.toString()),
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/cartScreen');
+                },
+              )),
         ],
       ),
       body: ProductsGrid(_showonlyFav),

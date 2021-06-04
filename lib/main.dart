@@ -1,8 +1,10 @@
 import 'package:DigitalShop/providers/cart.dart';
 import 'package:DigitalShop/providers/orders.dart';
 import 'package:DigitalShop/screens/cart_screen.dart';
+import 'package:DigitalShop/screens/edit-product-screen.dart';
 import 'package:DigitalShop/screens/orders_screen.dart';
 import 'package:DigitalShop/screens/productDetails_Screen.dart';
+import 'package:DigitalShop/screens/userProducts_screen.dart';
 
 import './screens/products_overview_screen.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
             '/': (ctx) => ProductsInfoScreen(),
             '/productDetails': (ctx) => ProductDetails(),
             '/cartScreen': (ctx) => CartScreen(),
-            'orders': (ctx) => OrdersScreen()
+            'orders': (ctx) => OrdersScreen(),
+            '/userProducts': (ctx) => UserProducts(),
+            '/edit-Product': (ctx) => EditProduct()
           },
         ));
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class UserProductItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imgurl;
-  UserProductItem(this.title, this.imgurl);
+  UserProductItem(this.id, this.title, this.imgurl);
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -21,7 +22,8 @@ class UserProductItem extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/edit-Product');
+                  Navigator.of(context)
+                      .pushNamed('/edit-Product', arguments: id);
                 }),
             IconButton(
                 icon: Icon(

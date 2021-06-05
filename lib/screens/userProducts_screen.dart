@@ -10,7 +10,13 @@ class UserProducts extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('user Products'),
-        actions: <Widget>[IconButton(icon: Icon(Icons.add), onPressed: () {})],
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/edit-Product');
+              })
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(10),

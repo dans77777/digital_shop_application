@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../widgets/badge.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
+import '../providers/products.dart';
 
 enum FilterOptions {
   All,
@@ -17,6 +18,24 @@ class ProductsInfoScreen extends StatefulWidget {
 
 class _ProductsInfoScreenState extends State<ProductsInfoScreen> {
   var _showonlyFav = false;
+  var isInit = true;
+  var isLoading = false;
+  @override
+  void didChangeDependencies() {
+    setState(() {
+      isLoading = true;
+    });
+    if (isInit) {
+      Provider.of<Products>(context).getandFetchProucts();
+    }
+    isInit = false;
+    setState(() {
+      isLoading = false;
+    });
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +74,9 @@ class _ProductsInfoScreenState extends State<ProductsInfoScreen> {
               )),
         ],
       ),
-      body: ProductsGrid(_showonlyFav),
+      body: (isLoading)
+          ? Center(child: CircularProgressIndicator())
+          : ProductsGrid(_showonlyFav),
       drawer: MainDrawer(),
     );
   }

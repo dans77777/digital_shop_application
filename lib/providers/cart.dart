@@ -1,4 +1,3 @@
-import 'package:DigitalShop/providers/product.dart';
 import 'package:flutter/cupertino.dart';
 
 class CartItem {

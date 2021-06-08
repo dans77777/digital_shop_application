@@ -1,5 +1,6 @@
 import 'package:DigitalShop/providers/cart.dart';
 import 'package:DigitalShop/providers/orders.dart';
+import 'package:DigitalShop/screens/auth_screen.dart';
 import 'package:DigitalShop/screens/cart_screen.dart';
 import 'package:DigitalShop/screens/edit-product-screen.dart';
 import 'package:DigitalShop/screens/orders_screen.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrange,
           ),
-          initialRoute: '/',
+          home: AuthScreen(),
           routes: {
             '/': (ctx) => ProductsInfoScreen(),
             '/productDetails': (ctx) => ProductDetails(),

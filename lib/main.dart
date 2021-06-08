@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           ),
           home: AuthScreen(),
           routes: {
-            '/': (ctx) => ProductsInfoScreen(),
+            '/productsInfo': (ctx) => ProductsInfoScreen(),
             '/productDetails': (ctx) => ProductDetails(),
             '/cartScreen': (ctx) => CartScreen(),
             'orders': (ctx) => OrdersScreen(),

@@ -1,3 +1,4 @@
+import 'package:DigitalShop/providers/auth.dart';
 import 'package:DigitalShop/providers/cart.dart';
 import 'package:DigitalShop/providers/orders.dart';
 import 'package:DigitalShop/screens/auth_screen.dart';
@@ -23,7 +24,10 @@ class MyApp extends StatelessWidget {
             create: (context) => Products(),
           ),
           ChangeNotifierProvider(create: (context) => Cart()),
-          ChangeNotifierProvider(create: (context) => Order())
+          ChangeNotifierProvider(create: (context) => Order()),
+          ChangeNotifierProvider(
+            create: (context) => Auth(),
+          ),
         ],
         child: MaterialApp(
           title: 'MyShop',

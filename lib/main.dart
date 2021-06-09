@@ -20,30 +20,39 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (context) => Products(),
-          ),
           ChangeNotifierProvider(create: (context) => Cart()),
-          ChangeNotifierProvider(create: (context) => Order()),
+
           ChangeNotifierProvider(
             create: (context) => Auth(),
           ),
-        ],
-        child: MaterialApp(
-          title: 'MyShop',
-          theme: ThemeData(
-            primarySwatch: Colors.purple,
-            accentColor: Colors.deepOrange,
+          // ignore: missing_required_param
+          ChangeNotifierProxyProvider<Auth, Products>(
+            update: (context, auth, previousProduct) => Products(auth.token,
+                previousProduct == null ? [] : previousProduct.items),
           ),
-          home: AuthScreen(),
-          routes: {
-            '/productsInfo': (ctx) => ProductsInfoScreen(),
-            '/productDetails': (ctx) => ProductDetails(),
-            '/cartScreen': (ctx) => CartScreen(),
-            'orders': (ctx) => OrdersScreen(),
-            '/userProducts': (ctx) => UserProducts(),
-            '/edit-Product': (ctx) => EditProductScreen()
-          },
+          // ignore: missing_required_param
+          ChangeNotifierProxyProvider<Auth, Order>(
+            update: (context, auth, previousProduct) => Order(auth.token,
+                previousProduct == null ? [] : previousProduct.orders),
+          ),
+        ],
+        child: Consumer<Auth>(
+          builder: (context, auth, _) => MaterialApp(
+            title: 'MyShop',
+            theme: ThemeData(
+              primarySwatch: Colors.purple,
+              accentColor: Colors.deepOrange,
+            ),
+            home: auth.isAuth ? ProductsInfoScreen() : AuthScreen(),
+            routes: {
+              '/productsInfo': (ctx) => ProductsInfoScreen(),
+              '/productDetails': (ctx) => ProductDetails(),
+              '/cartScreen': (ctx) => CartScreen(),
+              'orders': (ctx) => OrdersScreen(),
+              '/userProducts': (ctx) => UserProducts(),
+              '/edit-Product': (ctx) => EditProductScreen()
+            },
+          ),
         ));
   }
 }

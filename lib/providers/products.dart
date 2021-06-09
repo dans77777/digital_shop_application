@@ -21,22 +21,32 @@ class Products with ChangeNotifier {
   }
 
   final String token;
-  Products(this.token, param1);
+  final String userId;
+  Products(this.token, this.userId, param1);
   Future<void> getandFetchProucts() async {
-    final url =
+    var url =
         'https://flutter-shop-app-38c70-default-rtdb.firebaseio.com/products.json?auth=$token';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      if (extractedData == null) {
+        return;
+      }
+      url =
+          'https://flutter-shop-app-38c70-default-rtdb.firebaseio.com/Favouriteproducts/$userId.json?auth=$token';
+      final favResponse = await http.get(url);
+      final extractfav = json.decode(favResponse.body);
       final List<Product> loading = [];
       extractedData.forEach((prodid, prodData) {
         loading.add(Product(
-            id: prodid,
-            title: prodData['title'],
-            description: prodData['description'],
-            price: prodData['price'],
-            isFavourite: prodData['isFavourite'],
-            imageUrl: prodData['imageUrl']));
+          id: prodid,
+          title: prodData['title'],
+          description: prodData['description'],
+          price: prodData['price'],
+          isFavourite: extractfav == null ? false : extractfav[prodid] ?? false,
+          imageUrl: prodData['imageUrl'],
+        ));
       });
       _items = loading;
       notifyListeners();
@@ -56,7 +66,6 @@ class Products with ChangeNotifier {
                 'description': product.description,
                 'imageUrl': product.imageUrl,
                 'price': product.price,
-                'isFavourite': product.isFavourite,
               }))
           .then((response) {
         final newProduct = new Product(

@@ -22,10 +22,12 @@ class Products with ChangeNotifier {
 
   final String token;
   final String userId;
-  Products(this.token, this.userId, param1);
-  Future<void> getandFetchProucts() async {
+  Products(this.token, this.userId, this._items);
+  Future<void> getandFetchProucts([bool filterByuser = false]) async {
+    final filterString =
+        filterByuser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
-        'https://flutter-shop-app-38c70-default-rtdb.firebaseio.com/products.json?auth=$token';
+        'https://flutter-shop-app-38c70-default-rtdb.firebaseio.com/products.json?auth=$token&$filterString';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -57,7 +59,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url =
-        'https://flutter-shop-app-38c70-default-rtdb.firebaseio.com/products.json?auth=$token';
+        'https://flutter-shop-app-38c70-default-rtdb.firebaseio.com/products.json?auth=$token&orderBy="creatorId"&equalTo="$userId"';
     try {
       await http
           .post(url,
@@ -66,6 +68,7 @@ class Products with ChangeNotifier {
                 'description': product.description,
                 'imageUrl': product.imageUrl,
                 'price': product.price,
+                'creatorId': userId,
               }))
           .then((response) {
         final newProduct = new Product(

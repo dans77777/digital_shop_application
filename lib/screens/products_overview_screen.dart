@@ -22,17 +22,18 @@ class _ProductsInfoScreenState extends State<ProductsInfoScreen> {
   var isLoading = false;
   @override
   void didChangeDependencies() {
-    setState(() {
-      isLoading = true;
-    });
     if (isInit) {
-      Provider.of<Products>(context).getandFetchProucts();
+      setState(() {
+        isLoading = true;
+      });
+      Provider.of<Products>(context, listen: false)
+          .getandFetchProucts()
+          .then((_) => setState(() {
+                isLoading = false;
+              }));
     }
-    isInit = false;
-    setState(() {
-      isLoading = false;
-    });
 
+    isInit = false;
     super.didChangeDependencies();
   }
 

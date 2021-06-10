@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import '../models/http_exception.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/widgets.dart';
 
 class Auth with ChangeNotifier {
@@ -25,6 +25,27 @@ class Auth with ChangeNotifier {
 
   String get userId {
     return _userId;
+  }
+
+  Future<bool> autoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      print('no userdata');
+      return false;
+    }
+    final extractedData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+    final expiryData = DateTime.parse(extractedData['_tokenExpiry']);
+    if (expiryData.isBefore(DateTime.now())) {
+      print('expired token');
+      return false;
+    }
+    _token = extractedData['_token'];
+    _tokenExpiry = expiryData;
+    _userId = extractedData['userId'];
+    notifyListeners();
+    autoLogout();
+    return true;
   }
 
   Future<void> _authenticate(String email, String password, String key) async {
@@ -54,6 +75,13 @@ class Auth with ChangeNotifier {
       );
       autoLogout();
       notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({
+        '_token': _token,
+        '_tokenExpiry': _tokenExpiry.toIso8601String(),
+        'userId': userId
+      });
+      prefs.setString('userData', userData);
     } catch (error) {
       throw (error);
     }
@@ -67,7 +95,7 @@ class Auth with ChangeNotifier {
     return _authenticate(email, password, 'signInWithPassword');
   }
 
-  void logout() {
+  Future<void> logout() async {
     _token = null;
     _tokenExpiry = null;
     _userId = null;
@@ -76,6 +104,8 @@ class Auth with ChangeNotifier {
       _authTimer = null;
     }
     notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 
   void autoLogout() {
@@ -83,6 +113,6 @@ class Auth with ChangeNotifier {
       _authTimer.cancel();
     }
     final timeToExpiry = _tokenExpiry.difference(DateTime.now()).inSeconds;
-    _authTimer = Timer(Duration(seconds: 3), logout);
+    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }

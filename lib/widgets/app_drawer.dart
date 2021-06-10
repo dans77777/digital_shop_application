@@ -42,6 +42,7 @@ class MainDrawer extends StatelessWidget {
             title: Text('Logout'),
             onTap: () {
               Navigator.of(context).pop();
+              Navigator.of(context).pushNamed('/productsInfo');
               Provider.of<Auth>(context, listen: false).logout();
             },
           )

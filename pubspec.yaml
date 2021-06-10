@@ -35,6 +35,7 @@ dev_dependencies:
   provider: ^3.0.0
   intl: ^0.15.0
   http: ^0.11.3+14
+  shared_preferences:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -6,6 +6,7 @@ import 'package:DigitalShop/screens/cart_screen.dart';
 import 'package:DigitalShop/screens/edit-product-screen.dart';
 import 'package:DigitalShop/screens/orders_screen.dart';
 import 'package:DigitalShop/screens/productDetails_Screen.dart';
+import 'package:DigitalShop/screens/splash_screen.dart';
 import 'package:DigitalShop/screens/userProducts_screen.dart';
 
 import './screens/products_overview_screen.dart';
@@ -47,7 +48,14 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.purple,
               accentColor: Colors.deepOrange,
             ),
-            home: auth.isAuth ? ProductsInfoScreen() : AuthScreen(),
+            home: auth.isAuth
+                ? ProductsInfoScreen()
+                : FutureBuilder(
+                    future: auth.autoLogin(),
+                    builder: (context, authdata) =>
+                        authdata.connectionState == ConnectionState.waiting
+                            ? SplashScreen()
+                            : AuthScreen()),
             routes: {
               '/productsInfo': (ctx) => ProductsInfoScreen(),
               '/productDetails': (ctx) => ProductDetails(),
